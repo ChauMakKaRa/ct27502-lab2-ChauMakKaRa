@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+
+    <style>
+        #pokemon {
+            width: 50vh;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        h1 {
+            color: green;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .row .col-6 img {
+            height: 200px;
+        }
+
+        #type_title {
+            color: rgb(227, 227, 43);
+            text-align: center;
+            font-size: 38px;
+        }
+
+        .type {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container w-50">
+        <h1 class="text-center">Pokemon Search</h1>
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-auto">
+                <input type="text" class="form-control" id="inputVal">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" id="getVal">tìm</button>
+            </div>
+        </div>
+        <div id="pokemon">
+            <h1 id="text"></h1>
+            <div class="row">
+                <div class="col-6" id="front"></div>
+                <div class="col-6" id="back"></div>
+                <div class="col-6"><img src="" alt="" id="back"></div>
+            </div>
+            <div class="type">
+                <h2 id="type_title"></h2>
+                <h3 class="type_text"></h3>
+                <h3 class="type_text2"></h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+        </script>
+    <script>
+        function link(linkpoke) {
+            return 'https://pokeapi.co/api/v2/pokemon/' + linkpoke;
+        }
+        $(document).ready(function () {
+            $("#getVal").click(function () {
+                var namepoke = $("#inputVal").val();
+                var linkpokemon = link(namepoke);
+                console.log(linkpokemon);
+                const front_img = $("<img>");
+                const back_img = $("<img>");
+
+                $.getJSON(link(namepoke), function (data) {
+                    $('#text').append(data.name);
+                    $.each(data, function (sprites, value) {
+                        $('#front').append(front_img.prop("src", value.front_shiny));
+                        $('#back').append(back_img.prop("src", value.back_shiny));
+                    })
+                    $('#type_title').append().text("Types");
+                    $('.type_text').append(data.types[0].type.name);
+                    $('.type_text2').append(data.types[1].type.name);
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
